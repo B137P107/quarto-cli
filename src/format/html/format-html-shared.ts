@@ -40,6 +40,7 @@ import { normalizeNewlines } from "../../core/text.ts";
 export const kTabsets = "tabsets";
 export const kCodeCopy = "code-copy";
 export const kAnchorSections = "anchor-sections";
+export const kCallout = "callout";
 export const kCitationsHover = "citations-hover";
 export const kFootnotesHover = "footnotes-hover";
 export const kXrefsHover = "crossrefs-hover";
@@ -83,6 +84,7 @@ export function htmlFormatFeatureDefaults(
   const minimal = format.metadata[kMinimal] === true;
   return {
     tabby: !minimal && !bootstrap,
+    callout: !minimal,
     copyCode: !minimal,
     anchors: !minimal,
     hoverCitations: !minimal,
@@ -109,6 +111,16 @@ export const clipboardDependency = () => {
   dependency.scripts.push({
     name: "clipboard.min.js",
     path: formatResourcePath("html", join("clipboard", "clipboard.min.js")),
+  });
+  return dependency;
+};
+
+export const calloutDependency = () => {
+  const dependency: FormatDependency = { name: "callout" };
+  dependency.styles = [];
+  dependency.styles.push({
+    name: "callout.css",
+    path: formatResourcePath("html", join("callout", "callout.css")),
   });
   return dependency;
 };

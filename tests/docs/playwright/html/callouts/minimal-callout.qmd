@@ -1,0 +1,55 @@
+---
+title: Minimal Callout Test
+format:
+  html:
+    minimal: true
+    callout: true
+---
+
+## Note Callout
+
+::: {.callout-note}
+This is a note callout in minimal mode.
+:::
+
+## Tip Callout
+
+::: {.callout-tip}
+This is a tip callout in minimal mode.
+:::
+
+## Warning Callout
+
+::: {.callout-warning}
+This is a warning callout in minimal mode.
+:::
+
+## Caution Callout
+
+::: {.callout-caution}
+This is a caution callout in minimal mode.
+:::
+
+## Important Callout
+
+::: {.callout-important}
+This is an important callout in minimal mode.
+:::
+
+## Simple Appearance
+
+::: {.callout-note appearance="simple"}
+This is a simple appearance callout in minimal mode.
+:::
+
+## With Custom Title
+
+::: {.callout-note title="Custom Title"}
+This callout has a custom title in minimal mode.
+:::
+
+## Collapsible Callout
+
+::: {.callout-note collapse="true"}
+This callout can be collapsed in minimal mode.
+:::

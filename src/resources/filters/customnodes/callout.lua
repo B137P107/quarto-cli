@@ -136,8 +136,89 @@ function _callout_main()
   _quarto.ast.add_renderer("Callout", function(_)
     return _quarto.format.isHtmlOutput() and hasBootstrap()
   end, _quarto.modules.callouts.render_to_bootstrap_div)
-  
-  _quarto.ast.add_renderer("Callout", function(_) 
+
+  -- Renderer for minimal HTML with callout: true (no Bootstrap required)
+  -- Uses the standalone callout CSS included via calloutDependency()
+  -- Structure matches Bootstrap callout renderer for CSS compatibility
+  _quarto.ast.add_renderer("Callout", function(_)
+    return _quarto.format.isHtmlOutput() and param("has-callout", false)
+  end, function(node)
+    node = _quarto.modules.callouts.decorate_callout_title_with_crossref(node)
+    local title = quarto.utils.as_inlines(node.title)
+    local type = node.type
+    local calloutAppearance = node.appearance
+    local hasIcon = node.icon
+    local collapse = node.collapse
+
+    if calloutAppearance == _quarto.modules.constants.kCalloutAppearanceDefault and pandoc.utils.stringify(title) == "" then
+      title = _quarto.modules.callouts.displayName(type)
+    end
+
+    -- the content div (equivalent to callout-body-container in Bootstrap)
+    local contentDiv = pandoc.Div({}, pandoc.Attr("", {"callout-body-container"}))
+    local c = quarto.utils.as_blocks(node.content)
+    if pandoc.utils.type(c) == "Blocks" then
+      contentDiv.content:extend(c)
+    else
+      contentDiv.content:insert(c)
+    end
+    local has_content = #c > 0
+
+    -- the image placeholder
+    local noicon = ""
+    if hasIcon == false or not _quarto.modules.callouts.isBuiltInType(type) or type == nil then
+      noicon = " no-icon"
+    end
+    local imgPlaceholder = pandoc.Plain({pandoc.RawInline("html", "<i class='callout-icon" .. noicon .. "'></i>")});
+    local imgDiv = pandoc.Div({imgPlaceholder}, pandoc.Attr("", {"callout-icon-container"}));
+
+    -- Outer callout div with all classes
+    local calloutDiv = pandoc.Div({})
+    calloutDiv.attr = node.attr:clone()
+
+    local identifier = node.attr.identifier
+    if identifier ~= "" then
+      node.attr.identifier = ""
+      calloutDiv.attr.identifier = identifier
+    end
+
+    -- add callout classes
+    calloutDiv.attr.classes:insert("callout")
+    calloutDiv.attr.classes:insert("callout-style-" .. calloutAppearance)
+    if type ~= nil then
+      calloutDiv.attr.classes:insert("callout-" .. type)
+    end
+    if noicon ~= "" then
+      calloutDiv.attr.classes:insert("no-icon")
+    end
+    if not has_content then
+      calloutDiv.attr.classes:insert("callout-empty-content")
+    end
+
+    -- show a titled callout
+    if title ~= nil and (pandoc.utils.type(title) == "string" or next(title) ~= nil) then
+      -- mark the callout as being titled
+      calloutDiv.attr.classes:insert("callout-titled")
+
+      -- create the title container (matches Bootstrap structure)
+      local titleDiv = pandoc.Div(pandoc.Plain(title), pandoc.Attr("", {"callout-title-container", "flex-fill"}))
+      local headerDiv = pandoc.Div({imgDiv, titleDiv}, pandoc.Attr("", {"callout-header", "d-flex", "align-content-center"}))
+      local bodyDiv = contentDiv
+      bodyDiv.attr.classes:insert("callout-body")
+
+      -- add the header and body to the callout div
+      calloutDiv.content:insert(headerDiv)
+      calloutDiv.content:insert(bodyDiv)
+    else
+      -- show an untitled callout
+      local containerDiv = pandoc.Div({imgDiv, contentDiv}, pandoc.Attr("", {"callout-body", "d-flex"}))
+      calloutDiv.content:insert(containerDiv)
+    end
+
+    return calloutDiv
+  end)
+
+  _quarto.ast.add_renderer("Callout", function(_)
     return _quarto.format.isEpubOutput() or _quarto.format.isRevealJsOutput()
   end, function (node)
     node = _quarto.modules.callouts.decorate_callout_title_with_crossref(node)

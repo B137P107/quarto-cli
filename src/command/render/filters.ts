@@ -76,6 +76,7 @@ import { mergeConfigs } from "../../core/config.ts";
 import { projectType } from "../../project/types/project-types.ts";
 import { readCodePage } from "../../core/windows.ts";
 import { formatHasBootstrap } from "../../format/html/format-html-info.ts";
+import { htmlFormatFeatureDefaults, kCallout } from "../../format/html/format-html-shared.ts";
 import { resolveHtmlMathMethod } from "../../format/html/format-html-math.ts";
 import { activeProfiles, kQuartoProfile } from "../../quarto-core/profile.ts";
 import {
@@ -659,6 +660,8 @@ async function quartoFilterParams(
   params[kCiteMethod] = citeMethod(options);
   params[kPdfEngine] = pdfEngine(options);
   params[kHasBootstrap] = formatHasBootstrap(options.format);
+  params["has-callout"] = formatHasBootstrap(options.format) === false &&
+    (htmlFormatFeatureDefaults(options.format).callout || options.format.metadata[kCallout] === true);
 
   // has resource params
   const hasResourcePath = options.format.pandoc[kResourcePath] !== undefined ||

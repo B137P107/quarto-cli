@@ -1,0 +1,287 @@
+/**
+ * Quarto Callout Styles (for minimal: true + callout: true)
+ *
+ * These styles replicate Quarto's callout appearance without requiring Bootstrap.
+ * They use CSS variables aligned with Bootstrap's semantic colors.
+ */
+
+/* ==========================================================================
+   CSS Variables
+   ========================================================================== */
+
+:root {
+  /* Border and spacing */
+  --callout-border-width: 2px;
+  --callout-border-radius: 0.5rem;
+  --callout-padding: 1rem 1.25rem;
+  --callout-margin: 1rem 0;
+
+  /* Default (note) - Blue */
+  --callout-note-border: #4582ec;
+  --callout-note-bg: #dae6fb;
+  --callout-note-text: #1e5fd7;
+  --callout-note-icon: #4582ec;
+
+  /* Tip - Green */
+  --callout-tip-border: #02b875;
+  --callout-tip-bg: #ccf1e3;
+  --callout-tip-text: #018b59;
+  --callout-tip-icon: #02b875;
+
+  /* Warning - Amber */
+  --callout-warning-border: #f0ad4e;
+  --callout-warning-bg: #fcefdc;
+  --callout-warning-text: #b8860b;
+  --callout-warning-icon: #f0ad4e;
+
+  /* Caution - Orange */
+  --callout-caution-border: #fd7e14;
+  --callout-caution-bg: #ffe5d0;
+  --callout-caution-text: #b35400;
+  --callout-caution-icon: #fd7e14;
+
+  /* Important - Red */
+  --callout-important-border: #d9534f;
+  --callout-important-bg: #f7dddc;
+  --callout-important-text: #a71e2a;
+  --callout-important-icon: #d9534f;
+}
+
+/* Dark mode support - Bootstrap 5 semantic colors in dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --callout-note-border: #6ea8fe;
+    --callout-note-bg: #1e3a5f;
+    --callout-note-text: #9ec5fe;
+    --callout-note-icon: #6ea8fe;
+
+    --callout-tip-border: #5cdb95;
+    --callout-tip-bg: #1e4d33;
+    --callout-tip-text: #a5f3c5;
+    --callout-tip-icon: #5cdb95;
+
+    --callout-warning-border: #ffd54f;
+    --callout-warning-bg: #4d4100;
+    --callout-warning-text: #ffe082;
+    --callout-warning-icon: #ffd54f;
+
+    --callout-caution-border: #ffb74d;
+    --callout-caution-bg: #4d3319;
+    --callout-caution-text: #ffcc80;
+    --callout-caution-icon: #ffb74d;
+
+    --callout-important-border: #ef5350;
+    --callout-important-bg: #4d1e25;
+    --callout-important-text: #ffcdd2;
+    --callout-important-icon: #ef5350;
+  }
+}
+
+/* ==========================================================================
+   Base Callout Container
+   ========================================================================== */
+
+.callout {
+  border-left: var(--callout-border-width) solid var(--callout-note-border);
+  border-radius: var(--callout-border-radius);
+  padding: var(--callout-padding);
+  margin: var(--callout-margin);
+  background-color: var(--callout-note-bg);
+  color: var(--callout-note-text);
+  position: relative;
+}
+
+/* Type variants - using CSS variables for easy theming */
+.callout-note {
+  --callout-border: var(--callout-note-border);
+  --callout-bg: var(--callout-note-bg);
+  --callout-text: var(--callout-note-text);
+  --callout-icon: var(--callout-note-icon);
+}
+
+.callout-tip {
+  --callout-border: var(--callout-tip-border);
+  --callout-bg: var(--callout-tip-bg);
+  --callout-text: var(--callout-tip-text);
+  --callout-icon: var(--callout-tip-icon);
+}
+
+.callout-warning {
+  --callout-border: var(--callout-warning-border);
+  --callout-bg: var(--callout-warning-bg);
+  --callout-text: var(--callout-warning-text);
+  --callout-icon: var(--callout-warning-icon);
+}
+
+.callout-caution {
+  --callout-border: var(--callout-caution-border);
+  --callout-bg: var(--callout-caution-bg);
+  --callout-text: var(--callout-caution-text);
+  --callout-icon: var(--callout-caution-icon);
+}
+
+.callout-important {
+  --callout-border: var(--callout-important-border);
+  --callout-bg: var(--callout-important-bg);
+  --callout-text: var(--callout-important-text);
+  --callout-icon: var(--callout-important-icon);
+}
+
+/* Apply variant colors to the base callout */
+.callout.callout-note,
+.callout.callout-tip,
+.callout.callout-warning,
+.callout.callout-caution,
+.callout.callout-important {
+  border-left-color: var(--callout-border);
+  background-color: var(--callout-bg);
+  color: var(--callout-text);
+}
+
+/* ==========================================================================
+   Callout Header (for titled callouts)
+   ========================================================================== */
+
+.callout-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.callout-icon-container {
+  flex-shrink: 0;
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.callout-icon {
+  font-size: 1.25rem;
+  color: var(--callout-icon);
+}
+
+/* SVG Icons embedded as data URIs (no external dependencies) */
+.callout-icon::before {
+  content: "";
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.callout-note .callout-icon::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%234582ec'%3E%3Cpath d='M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z'/%3E%3C/svg%3E");
+}
+
+.callout-tip .callout-icon::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2302b875'%3E%3Cpath d='M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z'/%3E%3C/svg%3E");
+}
+
+.callout-warning .callout-icon::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23f0ad4e'%3E%3Cpath d='M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z'/%3E%3C/svg%3E");
+}
+
+.callout-caution .callout-icon::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fd7e14'%3E%3Cpath d='M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z'/%3E%3C/svg%3E");
+}
+
+.callout-important .callout-icon::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23d9534f'%3E%3Cpath d='M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z'/%3E%3C/svg%3E");
+}
+
+.callout-title-container {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--callout-text);
+}
+
+/* ==========================================================================
+   Callout Body
+   ========================================================================== */
+
+.callout-body {
+  margin: 0;
+}
+
+.callout-body p:first-child {
+  margin-top: 0;
+}
+
+.callout-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Untitled callouts (without callout-titled class)
+   ========================================================================== */
+
+.callout:not(.callout-titled) .callout-header {
+  display: none;
+}
+
+.callout:not(.callout-titled) .callout-body {
+  padding-top: 0;
+}
+
+/* ==========================================================================
+   Simple style variant (left border only, no header background)
+   ========================================================================== */
+
+.callout-style-simple.callout-titled .callout-header {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+.callout-style-simple .callout-icon {
+  font-size: 1rem;
+}
+
+.callout-style-simple .callout-icon::before {
+  width: 1rem;
+  height: 1rem;
+}
+
+.callout-style-simple .callout-title-container {
+  font-size: 0.8125rem;
+}
+
+/* ==========================================================================
+   No-icon variant
+   ========================================================================== */
+
+.callout.no-icon .callout-icon-container {
+  display: none;
+}
+
+.callout.no-icon .callout-title-container {
+  margin-left: 0;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .callout {
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+  }
+
+  .callout-icon::before {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .callout-style-simple .callout-icon::before {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}

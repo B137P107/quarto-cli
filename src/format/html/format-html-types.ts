@@ -15,6 +15,7 @@ export interface HtmlFormatFeatureDefaults {
   figResponsive?: boolean;
   codeAnnotations?: boolean;
   hoverXrefs?: boolean;
+  callout?: boolean;
 }
 
 export interface HtmlFormatTippyOptions {

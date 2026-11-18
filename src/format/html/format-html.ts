@@ -65,6 +65,7 @@ import {
 import { bootstrapExtras } from "./format-html-bootstrap.ts";
 
 import {
+  calloutDependency,
   clipboardDependency,
   createCodeCopyButton,
   formatHasCodeCopy,
@@ -72,6 +73,7 @@ import {
   kAnchorSections,
   kAxe,
   kBootstrapDependencyName,
+  kCallout,
   kCitationsHover,
   kCodeAnnotations,
   kComments,
@@ -343,6 +345,10 @@ export async function htmlFormatExtras(
     options.codeAnnotations = format.metadata[kCodeAnnotations] || false;
   }
 
+  // callout feature - enabled by default unless minimal, can be overridden with callout: true/false
+  options.callout = format.metadata[kCallout] !== false &&
+    (featureDefaults.callout || format.metadata[kCallout] === true);
+
   options.zenscroll = format.metadata[kSmoothScroll];
   options.codeTools = formatHasCodeTools(format);
   options.darkMode = formatDarkMode(format);
@@ -454,6 +460,11 @@ export async function htmlFormatExtras(
   // clipboard.js if required
   if (options.copyCode) {
     dependencies.push(clipboardDependency());
+  }
+
+  // callout CSS if required
+  if (options.callout) {
+    dependencies.push(calloutDependency());
   }
 
   // Add localization strings
