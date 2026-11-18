@@ -117,8 +117,8 @@ export const clipboardDependency = () => {
 
 export const calloutDependency = () => {
   const dependency: FormatDependency = { name: "callout" };
-  dependency.styles = [];
-  dependency.styles.push({
+  dependency.stylesheets = [];
+  dependency.stylesheets.push({
     name: "callout.css",
     path: formatResourcePath("html", join("callout", "callout.css")),
   });
